@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+</script>
+<form method="POST" action="/index/">
+    {% csrf_token %} {% for question in question_set %}
+    <h2>{{question}}<input type="text" id="input00{{question.id}}" name="{{question.name}}">
+    </h2>
+    <text class="button002" id="check00{{question.id}}"></text>
+    <br>
+    {% endfor %}
+    {% if permission %}
+    <input type="submit" onclick="submit001()">
+    {% else %}
+    <input type="submit">
+    {% endif %}
+</form>
+<hr>
+<center>
+    {% for answer in answer_set %}
+    <p id="{{answer}}" draggable="true" ondragstart="drag(event)">{{answer}}</p>
+    {% endfor %}
+</center>
+<script>
+    var g;
+    var h;
+    var i;
+    var j;
+    var k;
+
+    function submit001() {
+        {%
+            for question in question_set %}
+
+        b = input00
+        {
+            {
+                question.id
+            }
+        }
+    .
+        value;
+        if (b == "{{question.Currect_ans}}" || b == "jerusalem") {
+            g = 1;
+            input00
+            {
+                {
+                    question.id
+                }
+            }
+        .
+            value = b;
+            check00
+            {
+                {
+                    question.id
+                }
+            }
+        .
+            innerHTML = "<text class=button002>" + "✔" + "</text>";
+        } else {
+            input00
+            {
+                {
+                    question.id
+                }
+            }
+        .
+            value = b;
+            check00
+            {
+                {
+                    question.id
+                }
+            }
+        .
+            innerHTML = "<text class=button002>" + "✖" + "</text>";
+        }
+
+        {%
+            endfor %
+        }
+
+
+        if (g == 1 && h == 1 && i == 1 && j == 1 && k == 1) {
+            message001.innerHTML = "Congratulation! You have successfully finished this quiz.";
+            disappear001.innerHTML = "";
+            reload001.innerHTML = "<div id=center001><button class=button001 onclick=repeat001()>Repeat</button></div>";
+        }
+    }
+
+    function repeat001() {
+        location.reload();
+    }
+</script>
+</body>
+
+</html>

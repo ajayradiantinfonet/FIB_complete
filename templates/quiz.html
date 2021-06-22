@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Name It Quiz</title>
+
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+
+
+        }
+
+        // {'visible':true,'other properties':'fhfhf'}
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</head>
+
+<body>
+    <style>
+        #frame001 {
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: auto;
+            height: auto;
+            padding: 5px;
+        }
+        
+        #color001 {
+            color: black;
+            font-size: large;
+            text-align: left;
+        }
+        
+        #center001 {
+            text-align: center;
+        }
+        
+        .button001 {
+            background-color: blue;
+            color: white;
+            border-radius: 10px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        
+        .button002 {
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+    <div id="frame001">
+        <div id="color001">
+            <div id="center001">
+                <h2><strong>Name It Quiz</strong></h2>
+                <p><strong>Word Bank:</strong> </p>
+                {% for answer in answer_set %}
+                <p id="{{answer}}" draggable="true" ondragstart="drag(event)">{{answer}}</p>
+                {% endfor %}
+            </div>
+            <br/> {% for question in question_set %}
+            <p>{{question}}
+
+                <input type="text" id="input00{{question.id}}" size="15" />
+                <text class="button002" id="check00{{question.id}}"></text><br> {% endfor %}
+
+
+            </p>
+            <div id="disappear001">
+                <div id="center001">
+
+                    <button class="button001" onclick="submit001()">Submit</button></div>
+            </div><br />
+            <div id="center001">
+                <p id="message001"></p>
+                <p id="reload001"></p>
+            </div>
+            <br />
+            <br />
+        </div>
+
+    </div>
+    <script>
+        var g;
+        var h;
+        var i;
+        var j;
+        var k;
+
+        function submit001() {
+            { %
+                for question in question_set %
+            }
+
+            b = input00 {
+                {
+                    question.id
+                }
+            }.value;
+            if (b == "{{question.Currect_ans}}" || b == "jerusalem") {
+                g = 1;
+                input00 {
+                    {
+                        question.id
+                    }
+                }.value = b;
+                check00 {
+                    {
+                        question.id
+                    }
+                }.innerHTML = "<text class=button002>" + "✔" + "</text>";
+            } else {
+                input00 {
+                    {
+                        question.id
+                    }
+                }.value = b;
+                check00 {
+                    {
+                        question.id
+                    }
+                }.innerHTML = "<text class=button002>" + "✖" + "</text>";
+            }
+
+            { % endfor %
+            }
+
+
+
+            if (g == 1 && h == 1 && i == 1 && j == 1 && k == 1) {
+                message001.innerHTML = "Congratulation! You have successfully finished this quiz.";
+                disappear001.innerHTML = "";
+                reload001.innerHTML = "<div id=center001><button class=button001 onclick=repeat001()>Repeat</button></div>";
+            }
+        }
+
+        function repeat001() {
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>
